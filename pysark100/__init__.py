@@ -41,6 +41,10 @@ class sark100Scan:
         self._ensure_full()
         self.data.plot_interactive(*args, **kwargs)
 
+    def plot_pyqtgraph(self, *args, **kwargs):
+        self._ensure_full()
+        self.data.plot_pyqtgraph(*args, **kwargs)
+
     def __iter__(self):
         return self
 

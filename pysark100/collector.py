@@ -204,3 +204,85 @@ class Sark100Collector:
         )
 
         fig.show()
+
+    def plot_pyqtgraph(self, include_r=False, include_x=False, include_z=False, show_bands=True):
+        """
+        Display the data using PyQtGraph with interactive panning/zooming.
+        Shows SWR, and optionally R, X, and Z.
+        """
+        import pyqtgraph as pg
+        from pyqtgraph.Qt import QtWidgets, QtCore
+        import numpy as np
+        import sys
+
+        app = QtWidgets.QApplication.instance()
+        if app is None:
+            app = QtWidgets.QApplication(sys.argv)
+
+        # Prepare data
+        freq_mhz = self.df["freq"].to_numpy() / 1_000_000
+        swr_data = self.df["swr"].to_numpy()
+        r_data = self.df["r"].to_numpy()
+        x_data = self.df["x"].to_numpy()
+        z_data = self.df["z"].to_numpy()
+
+        # Set up plot window
+        win = pg.GraphicsLayoutWidget(title="SARK100 Measurement (PyQtGraph)")
+        plot = win.addPlot(title="SWR / Impedance vs Frequency (MHz)")
+        plot.showGrid(x=True, y=True, alpha=0.3)
+        plot.setLabel("bottom", "Frequency (MHz)")
+        plot.setLabel("left", "SWR / Impedance")
+        plot.setYRange(0, 10)  # ✅ Limit graph to 0–10
+
+        # Plot SWR
+        plot.plot(freq_mhz, swr_data, pen=pg.mkPen("b", width=2), name="SWR")
+
+        # Optional plots
+        if include_r:
+            plot.plot(freq_mhz, r_data, pen=pg.mkPen("g", width=2), name="R")
+        if include_x:
+            plot.plot(freq_mhz, x_data, pen=pg.mkPen("orange", width=2), name="X")
+        if include_z:
+            plot.plot(freq_mhz, z_data, pen=pg.mkPen("r", width=2), name="Z")
+
+        # Add ham band overlays
+        if show_bands:
+            min_freq = self.df["freq"].min()
+            max_freq = self.df["freq"].max()
+
+            for band_name, band_info in bands.items():
+                if band_name == "hf":
+                    continue  # Skip 'hf'
+
+                band_start = band_info["start"]
+                band_end = band_info["end"]
+
+                # Only include bands overlapping with our data range
+                if band_end < min_freq or band_start > max_freq:
+                    continue
+
+                start_mhz = band_start / 1_000_000
+                end_mhz = band_end / 1_000_000
+                mid_mhz = (start_mhz + end_mhz) / 2
+
+                # ✅ Grey shaded rectangle limited to y=0–10
+                rect = QtWidgets.QGraphicsRectItem(start_mhz, 0, end_mhz - start_mhz, 10)
+                rect.setBrush(pg.mkBrush(200, 200, 200, 80))
+                rect.setPen(pg.mkPen(None))
+                plot.addItem(rect)
+
+                # ✅ Vertical dashed line at mid frequency
+                line = pg.InfiniteLine(pos=mid_mhz, angle=90,
+                                       pen=pg.mkPen("k", style=QtCore.Qt.DashLine))
+                plot.addItem(line)
+
+                # ✅ Band label inside visible range
+                text = pg.TextItem(band_name, color="k", anchor=(0.5, 1.0))
+                text.setPos(mid_mhz, 9.8)
+                plot.addItem(text)
+
+        # Add legend
+        plot.addLegend(offset=(30, 30))
+
+        win.show()
+        app.exec_()
