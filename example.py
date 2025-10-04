@@ -3,24 +3,7 @@ import argparse
 import sys
 from pysark100 import sark100, bands
 
-def main():
-    parser = argparse.ArgumentParser(
-        description="SARK100 Antenna Analyzer CLI"
-    )
-
-    # ✅ Global arguments
-    parser.add_argument(
-        "--device",
-        type=str,
-        required=False,
-        default="/dev/ttyUSB0",
-        help="Serial device for SARK100 (default: /dev/ttyUSB0)"
-    )
-    parser.add_argument(
-        "--progress",
-        action="store_true",
-        help="Display a progress bar during the scan"
-    )
+def plot_options(parser):
     parser.add_argument(
         "--show-r",
         action="store_true",
@@ -45,6 +28,8 @@ def main():
         default=True,
         help="Show ham bands in plots"
     )
+
+def output_options(parser):
     parser.add_argument(
         "--plot",
         nargs="?",
@@ -68,6 +53,25 @@ def main():
         help="Show PyQtGraph chart after scan"
     )
 
+def main():
+    parser = argparse.ArgumentParser(
+        description="SARK100 Antenna Analyzer CLI"
+    )
+
+    # ✅ Global arguments
+    parser.add_argument(
+        "--device",
+        type=str,
+        required=False,
+        default="/dev/ttyUSB0",
+        help="Serial device for SARK100 (default: /dev/ttyUSB0)"
+    )
+    parser.add_argument(
+        "--progress",
+        action="store_true",
+        help="Display a progress bar during the scan"
+    )
+
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # ---- scan ----
@@ -75,12 +79,16 @@ def main():
     scan_parser.add_argument("--start", type=int, required=True, help="Start frequency in Hz")
     scan_parser.add_argument("--end", type=int, required=True, help="End frequency in Hz")
     scan_parser.add_argument("--step", type=int, default=10000, help="Step size in Hz (default: 10 kHz)")
+    plot_options(scan_parser)
+    output_options(scan_parser)
 
     # ---- scan_band ----
     scan_band_parser = subparsers.add_parser("scan_band", help="Scan a predefined amateur radio band")
     scan_band_parser.add_argument("band", type=str, choices=[b for b in bands.keys()], help="Ham band name (e.g. 40m, 20m, 10m)")
     scan_band_parser.add_argument("--buffer", type=float, default=0.01, help="Percentage buffer before/after band edges (default: 1%%)")
     scan_band_parser.add_argument("--step", type=int, default=10000, help="Step size in Hz (default: 10 kHz)")
+    plot_options(scan_band_parser)
+    output_options(scan_band_parser)
 
     args = parser.parse_args()
 
