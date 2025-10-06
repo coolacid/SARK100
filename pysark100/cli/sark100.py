@@ -112,7 +112,16 @@ def main():
 
     # ---- scan ----
     if args.command == "scan":
-        pass
+        data = s.scan(start=args.start, end=args.end, step=args.step, progress=args.progress)
+        if args.plot is not None:
+            filename = args.plot or "scan_plot.png"
+            data.plot(filename=filename, **plot_opts)
+        if args.plot_interactive:
+            data.plot_interactive(**plot_opts)
+        if args.plot_pyqt:
+            data.plot_pyqtgraph(**plot_opts)
+        if args.show_df:
+            print(data.get_dataframe())
     # ---- scan_band ----
     elif args.command == "scan_band":
         data = s.scan_band(args.band, buffer_pct=args.buffer, step=args.step, progress=args.progress)
