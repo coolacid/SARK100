@@ -45,22 +45,23 @@ pip install -r requirements.txt
 
 ### Command Line Interface
 
-The `example.py` script provides a full-featured CLI for the SARK100:
+
+The `sark100` CLI tool provides a full-featured command-line interface for the SARK100:
 
 #### Scan Custom Frequency Range
 
 ```bash
-python example.py scan --start 14000000 --end 14350000 --step 10000 --plot 20m_scan.png --show_df
+sark100 scan --start 14000000 --end 14350000 --step 10000 --plot 20m_scan.png --show_df
 ```
 
 #### Scan Amateur Radio Bands
 
 ```bash
 # Scan 20m band with 1% buffer and interactive plot
-python example.py scan_band 20m --buffer 0.01 --plot-interactive
+sark100 scan_band 20m --buffer 0.01 --plot-interactive
 
 # Scan 40m band with PyQtGraph display
-python example.py scan_band 40m --plot-pyqt --show-bands
+sark100 scan_band 40m --plot-pyqt --show-bands
 ```
 
 #### Command Line Options
