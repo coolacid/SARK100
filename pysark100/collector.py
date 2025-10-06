@@ -1,14 +1,24 @@
-from pysark100.bands import bands
-
+"""
+Collector module for SARK100 measurements.
+Manages data collection, storage, and visualization.
+"""
 import polars as pl
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
-import numpy as np
+from pysark100.bands import bands
 
 
 class Sark100Collector:
     def __init__(self):
-        # Initialize an empty Polars DataFrame with correct types
+        """
+        Initialize an empty Polars DataFrame for measurement data.
+        Columns:
+            freq: Frequency in Hz
+            swr: Standing Wave Ratio
+            r: Resistance (Ohms)
+            x: Reactance (Ohms)
+            z: Impedance magnitude (Ohms)
+        """
         self.df = pl.DataFrame(
             schema=[
                 ("freq", pl.Int64),
@@ -27,6 +37,7 @@ class Sark100Collector:
         try:
             swr, r, x, z = map(float, measurement_str.split(","))
         except ValueError:
+            # Raise error if measurement string is malformed
             raise ValueError("measurement_str must be in the format 'swr,r,x,z' with numeric values")
 
         new_row = {
@@ -43,6 +54,10 @@ class Sark100Collector:
         return self.df
 
     def plot(self, include_r=False, include_x=False, include_z=False, show_bands=True, filename="plot.png"):
+        """
+        Plot measurement data using matplotlib.
+        Optionally overlays ham bands and additional impedance lines.
+        """
         plt.figure(figsize=(12, 6))
 
         freq_mhz = self.df["freq"].to_numpy() / 1_000_000
@@ -212,7 +227,6 @@ class Sark100Collector:
         """
         import pyqtgraph as pg
         from pyqtgraph.Qt import QtWidgets, QtCore
-        import numpy as np
         import sys
 
         app = QtWidgets.QApplication.instance()

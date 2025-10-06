@@ -1,7 +1,7 @@
-pyserial
-polars
-matplotlib
-tdqm
-plotly
-pyqtgraph
-PyQt5
+pyserial==3.5.*
+polars==1.34.*
+matplotlib==3.10.*
+tqdm==4.67.*
+plotly==6.3.*
+pyqtgraph==0.13.*
+PyQt5==5.15.*

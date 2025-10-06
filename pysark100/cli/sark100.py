@@ -3,6 +3,7 @@ import argparse
 import sys
 from pysark100 import sark100, bands
 
+
 def plot_options(parser):
     parser.add_argument(
         "--show-r",
@@ -29,6 +30,7 @@ def plot_options(parser):
         help="Show ham bands in plots"
     )
 
+
 def output_options(parser):
     parser.add_argument(
         "--plot",
@@ -43,7 +45,7 @@ def output_options(parser):
         help="Show interactive Plotly chart after scan"
     )
     parser.add_argument(
-        "--show_df",
+        "--show-df",
         action="store_true",
         help="Print the resulting dataframe to console"
     )
@@ -52,6 +54,7 @@ def output_options(parser):
         action="store_true",
         help="Show PyQtGraph chart after scan"
     )
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -94,7 +97,7 @@ def main():
 
     # ---- Validate plot options ----
     if not (args.plot or args.plot_interactive or args.plot_pyqt or args.show_df):
-        print("Error: You must provide at least one of --show_df, --plot, --plot-interactive, or --plot-pyqt")
+        print("Error: You must provide at least one of --show-df, --plot, --plot-interactive, or --plot-pyqt")
         sys.exit(1)
 
     # Plot options dictionary
@@ -123,5 +126,10 @@ def main():
         if args.show_df:
             print(data.get_dataframe())
 
+
+"""
+SARK100 CLI tool
+Provides command-line interface for scanning and plotting antenna measurements.
+"""
 if __name__ == "__main__":
     main()

@@ -212,6 +212,20 @@ Contributions are welcome! Please feel free to submit pull requests or open issu
 
 This project is open source. Please check the repository for license information.
 
+
+## Example Plots
+
+### Static Plot (matplotlib)
+![Static Plot Example](media/example_plot.png)
+*Example output from the `plot` function (matplotlib)*
+
+### Interactive Plot (Plotly)
+![Interactive Plot Example](media/plot_interactive.png)
+*Example output from the `plot_interactive` function (Plotly)*
+
+![Interactive Plot Zoomed](media/plot_interactive_zoom.png)
+*Zoomed view from the `plot_interactive` function (Plotly)*
+
 ## Acknowledgments
 
 - Built for the SARK100 SWR/Antenna Analyzer

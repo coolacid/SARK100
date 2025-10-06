@@ -1,11 +1,29 @@
 #!/usr/bin/env python3
-import serial
+"""
+pysark100 - Python Library for SARK100 SWR Analyzer
+
+A comprehensive Python library for interfacing with the SARK100 SWR/Antenna Analyzer.
+Provides automated frequency sweeps, data collection, and visualization capabilities.
+"""
+
 import math
+import serial
 from tqdm import tqdm
 from pysark100.collector import Sark100Collector
 from pysark100.bands import bands, generate_band_frequencies
 
+try:
+    from pysark100._version import __version__
+except ImportError:
+    __version__ = "1.0.0"
+
+__all__ = ["sark100", "sark100Scan", "bands", "generate_band_frequencies"]
+
+
 class sark100Scan:
+    """
+    Handles a frequency sweep from the SARK100 device, collects and manages measurement data.
+    """
     data_values = ['swr', 'r', 'x', 'z']
 
     def __init__(self, parent, start, end, step=1000, progress=True):
@@ -83,20 +101,24 @@ class sark100Scan:
         self.cur_freq += self.step
         return dict(zip(self.data_values, data.split(",")))
 
+
 class sark100:
+    """
+    Main interface to the SARK100 device. Handles connection and scan commands.
+    """
     def __init__(self, port='/dev/ttyUSB0'):
         self.device = serial.Serial(
-                port=port,  # Replace with your port name (e.g., 'COM1' on Windows)
-                baudrate=57600,
-                bytesize=8,
-                timeout=5,
-                stopbits=serial.STOPBITS_ONE
+            port=port,  # Replace with your port name (e.g., 'COM1' on Windows)
+            baudrate=57600,
+            bytesize=8,
+            timeout=5,
+            stopbits=serial.STOPBITS_ONE
         )
 
-    def scan(self, start, end, step = 1000, progress=False):
+    def scan(self, start, end, step=1000, progress=False):
         total = math.ceil(((end - start) / step))
         print(f"Getting data between {start} and {end} with a step of {step} for a total of {total} data points.")
-        return sark100Scan(self, start, end, step)
+        return sark100Scan(self, start, end, step, progress)
 
     def scan_band(self, band, buffer_pct=0.15, step=1000, progress=False):
         freq_list = generate_band_frequencies(band, buffer_pct=buffer_pct, step_hz=step)

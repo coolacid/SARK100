@@ -1,17 +1,22 @@
+"""
+bands.py
+Defines amateur radio bands and provides frequency generation utilities.
+"""
+
 bands = {
-        "160m" : {'start': 1800000, 'end': 2000000},
-        "80m" : {'start': 3500000, 'end': 4000000},
-        "60m" : {'start': 5300000, 'end': 5500000},
-        "40m" : {'start': 7000000, 'end': 7300000},
-        "30m" : {'start': 10100000, 'end': 10150000},
-        "20m" : {'start': 14000000, 'end': 14350000},
-        "17m" : {'start': 18060000, 'end': 18168000},
-        "15m" : {'start': 21000000, 'end': 21450000},
-        "12m" : {'start': 24890000, 'end': 24990000},
-        "10m" : {'start': 28000000, 'end': 29700000},
-        "6m" : {'start': 50000000, 'end': 54000000},
-        "hf" : {'start': 1800000, 'end': 30000000},
-        }
+    "160m": {'start': 1800000, 'end': 2000000},
+    "80m": {'start': 3500000, 'end': 4000000},
+    "60m": {'start': 5300000, 'end': 5500000},
+    "40m": {'start': 7000000, 'end': 7300000},
+    "30m": {'start': 10100000, 'end': 10150000},
+    "20m": {'start': 14000000, 'end': 14350000},
+    "17m": {'start': 18060000, 'end': 18168000},
+    "15m": {'start': 21000000, 'end': 21450000},
+    "12m": {'start': 24890000, 'end': 24990000},
+    "10m": {'start': 28000000, 'end': 29700000},
+    "6m": {'start': 50000000, 'end': 54000000},
+    "hf": {'start': 1800000, 'end': 30000000},
+}
 
 
 def generate_band_frequencies(band_name: str, buffer_pct: float = 0.0, step_hz: int = 1000):

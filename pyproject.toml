@@ -1,0 +1,94 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pysark100"
+dynamic = ["version"]
+description = "Python Library and Tools for the SARK100 SWR Analyzer"
+readme = "README.md"
+license = {text = "GNU Affero General Public License v3.0 or later (AGPL-3.0+)"}
+authors = [
+    {name = "Jason Kendall (VE3YCA)"},
+]
+maintainers = [
+    {name = "Jason Kendall (VE3YCA)"},
+]
+keywords = [
+    "sark100",
+    "swr",
+    "antenna",
+    "analyzer", 
+    "ham radio",
+    "amateur radio",
+    "rf",
+    "measurement",
+    "impedance",
+    "radio frequency",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Telecommunications Industry",
+    "Topic :: Communications :: Ham Radio",
+    "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8", 
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "pyserial==3.5.*",
+    "polars==1.34.*",
+    "matplotlib==3.10.*",
+    "tqdm==4.67.*",
+    "plotly==6.3.*",
+    "pyqtgraph==0.13.*",
+    "PyQt5==5.15.*",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov",
+    "black",
+    "flake8", 
+    "mypy",
+    "build",
+    "twine",
+]
+
+[project.urls]
+Homepage = "https://github.com/coolacid/SARK100"
+Repository = "https://github.com/coolacid/SARK100"
+Documentation = "https://github.com/coolacid/SARK100"
+"Bug Tracker" = "https://github.com/coolacid/SARK100/issues"
+
+[project.scripts]
+sark100 = "pysark100.cli.sark100:main"
+
+[tool.setuptools_scm]
+write_to = "pysark100/_version.py"
+
+[tool.setuptools.packages.find]
+include = ["pysark100*"]
+
+[tool.setuptools.package-data]
+pysark100 = ["*.txt", "*.md"]
+
+[tool.black]
+line-length = 88
+target-version = ['py37']
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
