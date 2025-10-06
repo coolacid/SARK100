@@ -227,6 +227,15 @@ This project is open source. Please check the repository for license information
 ![Interactive Plot Zoomed](media/plot_interactive_zoom.png)
 *Zoomed view from the `plot_interactive` function (Plotly)*
 
+
+## Alternative Software
+
+If you're looking for other SARK100-related software, check out these projects:
+
+- [SARK-100 by SM6WHY](https://sm6why.n.nu/sark-100) — Windows GUI and utilities for SARK100
+- [sark-100-antenna-analyzer (C)](https://github.com/coddingtonbear/sark-100-antenna-analyzer) — C based tool compilable for Windows, Linux and MacOS 
+- [swr (Perl/CLI)](https://github.com/arodland/swr) — Perl based CLI tool that uses standard linux tools to generate graphs
+
 ## Acknowledgments
 
 - Built for the SARK100 SWR/Antenna Analyzer
