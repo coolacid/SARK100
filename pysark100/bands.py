@@ -64,4 +64,7 @@ def generate_band_frequencies(band_name: str, buffer_pct: float = 0.0, step_hz: 
     buffered_end = int(((end + buffer + 999) // 1000) * 1000)       # ceil to nearest kHz
 
     frequencies = list(range(buffered_start, buffered_end + 1, step_hz))
+    # Ensure last frequency is strictly beyond the band end
+    if frequencies[-1] <= end:
+        frequencies.append(frequencies[-1] + step_hz)
     return frequencies
