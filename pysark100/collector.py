@@ -72,6 +72,8 @@ class Sark100Collector:
             plt.plot(freq_mhz, self.df["x"].to_numpy(), label="X", color="orange")
         if include_z:
             plt.plot(freq_mhz, self.df["z"].to_numpy(), label="Z", color="red")
+        # Add dashed horizontal line at y=3
+        plt.axhline(y=3, color="purple", linestyle="--", linewidth=1, alpha=0.7, label="SWR=3")
 
         # Overlay ham bands
         if show_bands:
@@ -162,6 +164,8 @@ class Sark100Collector:
                 name="Z",
                 line=dict(color="red")
             ))
+        # Add dashed horizontal line at y=3
+        fig.add_hline(y=3, line=dict(color="purple", width=1, dash="dash"), opacity=0.7)
 
         # Overlay ham bands
         if show_bands:
@@ -258,6 +262,9 @@ class Sark100Collector:
             plot.plot(freq_mhz, x_data, pen=pg.mkPen("orange", width=2), name="X")
         if include_z:
             plot.plot(freq_mhz, z_data, pen=pg.mkPen("r", width=2), name="Z")
+        # Add dashed horizontal line at y=3
+        hline = pg.InfiniteLine(pos=3, angle=0, pen=pg.mkPen("purple", style=QtCore.Qt.DashLine))
+        plot.addItem(hline)
 
         # Add ham band overlays
         if show_bands:
