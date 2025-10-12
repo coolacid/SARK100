@@ -4,6 +4,7 @@ plot.png
 __pycache__/
 *.py[codz]
 *$py.class
+*_plot.png
 
 # C extensions
 *.so
