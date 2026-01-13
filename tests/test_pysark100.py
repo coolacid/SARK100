@@ -24,3 +24,12 @@ def test_data_collector():
     assert len(df) == 1
     assert df["freq"][0] == 14200000
     assert abs(df["swr"][0] - 1.5) < 0.001
+
+
+def test_csv_export():
+    from pysark100.collector import Sark100Collector
+    collector = Sark100Collector()
+    collector.add_measurement(14200000, "1.5,50.0,25.0,55.9")
+    csv = collector.to_csv()
+    assert "freq" in csv
+    assert "14200000" in csv

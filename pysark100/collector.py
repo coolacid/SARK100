@@ -6,6 +6,8 @@ import polars as pl
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from pysark100.bands import bands
+import tempfile
+import os
 
 
 class Sark100Collector:
@@ -307,3 +309,54 @@ class Sark100Collector:
 
         win.show()
         app.exec_()
+
+    def to_csv(self, filename=None):
+        """
+        Export the current dataframe to CSV.
+
+        Parameters
+        ----------
+        filename : str or None
+            If None, return CSV as a string. If '-', write to stdout. Otherwise
+            write to the given filename and return the filename.
+        """
+        # Polars DataFrame provides `write_csv(path)` which writes to a file.
+        # For string return (filename is None) or stdout ('-') we write to a
+        # temporary file and read it back.
+        if filename is None:
+            tmp = None
+            try:
+                tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
+                tmp_path = tmp.name
+                tmp.close()
+                self.df.write_csv(tmp_path)
+                with open(tmp_path, "r", encoding="utf-8") as f:
+                    return f.read()
+            finally:
+                if tmp is not None:
+                    try:
+                        os.remove(tmp_path)
+                    except Exception:
+                        pass
+
+        if filename == "-":
+            tmp = None
+            try:
+                tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".csv")
+                tmp_path = tmp.name
+                tmp.close()
+                self.df.write_csv(tmp_path)
+                with open(tmp_path, "r", encoding="utf-8") as f:
+                    import sys
+                    sys.stdout.write(f.read())
+                return None
+            finally:
+                if tmp is not None:
+                    try:
+                        os.remove(tmp_path)
+                    except Exception:
+                        pass
+
+        # Write directly to file path using Polars' write_csv
+        self.df.write_csv(filename)
+        return filename

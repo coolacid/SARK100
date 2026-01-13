@@ -54,6 +54,13 @@ def output_options(parser):
         action="store_true",
         help="Show PyQtGraph chart after scan"
     )
+    parser.add_argument(
+        "--csv",
+        nargs="?",
+        const="-",
+        type=str,
+        help="Write CSV output (filename or '-' for stdout; present without value prints to stdout)"
+    )
 
 
 def main():
@@ -122,6 +129,13 @@ def main():
             data.plot_pyqtgraph(**plot_opts)
         if args.show_df:
             print(data.get_dataframe())
+        if args.csv is not None:
+            # Ensure scan is complete
+            data._ensure_full()
+            if args.csv == "-":
+                print(data.data.to_csv(None), end="")
+            else:
+                data.data.to_csv(args.csv)
     # ---- scan_band ----
     elif args.command == "scan_band":
         data = s.scan_band(args.band, buffer_pct=args.buffer, step=args.step, progress=args.progress)
@@ -134,6 +148,13 @@ def main():
             data.plot_pyqtgraph(**plot_opts)
         if args.show_df:
             print(data.get_dataframe())
+        if args.csv is not None:
+            # Ensure scan is complete
+            data._ensure_full()
+            if args.csv == "-":
+                print(data.data.to_csv(None), end="")
+            else:
+                data.data.to_csv(args.csv)
 
 
 """
